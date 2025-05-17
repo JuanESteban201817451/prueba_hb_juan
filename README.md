@@ -1,17 +1,26 @@
-# prueba_hb_juan
+# Prueba Habi  
+**Juan Esteban Segura**
 
-## Abrir este Cuaderno en Google Colab
+Este es un repositorio temporal que será deshabilitado una vez finalice el proceso de evaluación de la prueba técnica.
 
-Para abrir y ejecutar este cuaderno en Google Colab, puedes seguir estos pasos:
+## 📘 Cómo abrir este cuaderno en Google Colab
 
-1.  Ve a la página principal de este repositorio en GitHub.
-2.  Haz clic en el archivo `principal.ipynb`. Esto mostrará el contenido del cuaderno en GitHub.
-3.  Encima del contenido del cuaderno, a la derecha, deberías ver un icono de Google Colab (parece un círculo con un triángulo dentro) y/o un botón que dice "Open in Colab". Haz clic en él.
+Haz clic en el siguiente botón para abrir directamente el cuaderno en Google Colab:
 
-O, alternativamente, puedes:
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanESteban201817451/prueba_hb_juan/blob/main/principal.ipynb)
 
-1.  Ve a [https://colab.research.google.com/](https://colab.research.google.com/).
-2.  En la pestaña "Archivo", selecciona "Abrir cuaderno".
-3.  Elige la pestaña "GitHub".
-4.  Busca mi repositorio (ingresa mi nombre de usuario `TuUsuario` y el nombre del repositorio `NombreDeTuRepositorio`) y selecciona el archivo `principal.ipynb`.
-5.  Haz clic en "Abrir".
+---
+
+### 🔗 Opción 1: Desde GitHub
+
+1. Ve a la página principal de este repositorio en GitHub.
+2. Haz clic sobre el archivo `principal.ipynb`.
+3. En la parte superior del archivo (donde se visualiza el código), haz clic en el botón **"Open in Colab"** (ícono de Colab: un círculo con un triángulo).
+
+### 🌐 Opción 2: Desde Google Colab
+
+1. Ingresa a [https://colab.research.google.com/](https://colab.research.google.com/).
+2. En el menú superior, haz clic en **Archivo → Abrir cuaderno**.
+3. Selecciona la pestaña **GitHub**.
+4. En el campo de búsqueda, ingresa la siguiente ruta del repositorio:
+
