@@ -7,7 +7,9 @@ Este es un repositorio temporal que será deshabilitado una vez finalice el proc
 
 Haz clic en el siguiente botón para abrir directamente el cuaderno en Google Colab:
 
-[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanESteban201817451/prueba_hb_juan/blob/main/principal.ipynb)
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanESteban201817451/prueba_hb_juan/Prueba_Data_Science.ipynb)
+
+
 
 ---
 
