@@ -82,5 +82,6 @@ pip install -r requirements.txt
 > from google.colab import output
 > output.enable_custom_widget_manager()
 > ```
+>Ademas Recuerda revisar los datos y las rutas de entrada ya que pueden cambiar. (Espichando el enlace tienes un colba que corrio por completo)
 
 
