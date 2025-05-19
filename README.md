@@ -26,3 +26,28 @@ Haz clic en el siguiente botón para abrir directamente el cuaderno en Google Co
 3. Selecciona la pestaña **GitHub**.
 4. En el campo de búsqueda, ingresa la siguiente ruta del repositorio:
 
+# PRUEBA_HB_JUAN
+
+Repositorio de la prueba técnica para **Habi**.  
+Contiene un flujo completo ―desde la descarga y el pre-procesamiento de datos geográficos hasta la generación de modelos y visualizaciones― empaquetado en un cuaderno de Jupyter y varios scripts auxiliares.
+
+## 🌳 Estructura de carpetas
+
+```text
+PRUEBA_HB_JUAN/
+│
+├── data/                    # Ubica aquí los datasets de trabajo (.csv, .parquet, shapefiles, etc.)
+│
+├── utils/                   # Módulos de apoyo reutilizables
+│   ├── __pycache__/         # Caché de Python (se crea automáticamente)
+│   ├── cruces_geograficos.py    # Cruces y joins espaciales
+│   ├── descarga.py              # Funciones para descargar y descomprimir datasets
+│   ├── mapas_y_graficas.py      # Gráficas estáticas e interactivas (Folium, Plotly, etc.)
+│   ├── pipe_modelo.py           # Pipeline completo de entrenamiento y predicción
+│   └── procesador.py            # Limpieza y transformación de datos
+│
+├── .gitignore               # Rutas y extensiones que no se suben al repo
+├── Prueba_Data_Science.ipynb    # Notebook principal con la solución end-to-end
+├── prueba_habi.yml          # Conda environment: recrea el entorno tal cual se usó
+├── requirements.txt         # Lista de dependencias para instalación vía pip
+└── README.md                # (Este archivo) Documentación y guía de uso
