@@ -83,6 +83,4 @@ pip install -r requirements.txt
 > output.enable_custom_widget_manager()
 > ```
 
-```
-```
 
