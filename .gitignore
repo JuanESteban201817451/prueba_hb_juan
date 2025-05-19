@@ -172,3 +172,18 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+# Ignora todo el contenido de data
+data/**
+
+# Pero NO ignores las carpetas (permite que suban vacías si tienen un .gitkeep)
+!data/
+!data/external/
+!data/interim/
+!data/processed/
+!data/raw/
+!data/procesado/
+
+# No ignores el contenido de data/procesado/
+!data/procesado/**
