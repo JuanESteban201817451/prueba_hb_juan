@@ -1,0 +1,30 @@
+# Paquetes base con versiones compatibles (evitan errores binarios)
+requests==2.31.0
+pandas==1.5.3
+numpy==1.23.5
+geopandas==0.13.2
+shapely==2.0.1
+fiona==1.9.5
+pyproj==3.5.0
+
+# Librerías científicas y de análisis
+scipy
+scikit-learn
+matplotlib
+seaborn
+plotly
+missingno
+tqdm
+ipywidgets
+ipython
+matplotlib-venn
+
+# Librerías geoespaciales complementarias
+folium
+branca
+contextily
+libpysal
+esda
+
+# Utilidades de red y archivos
+zipfile36

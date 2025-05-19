@@ -1,0 +1,7 @@
+name: prueba_habi_1
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - jupyterlab
+  - ipykernel
