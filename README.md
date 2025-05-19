@@ -7,7 +7,7 @@ Contiene un flujo completo ―desde la descarga y el pre-procesamiento de datos 
 
 Haz clic en el siguiente botón para abrir directamente el cuaderno en Google Colab:
 
-[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanESteban201817451/prueba_hb_juan/Prueba_Data_Science.ipynb)
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ns6eYIcr_xFFxdQA_VOUAYHdVzCMBopU?usp=sharing)
 
 
 
