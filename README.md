@@ -49,7 +49,7 @@ PRUEBA_HB_JUAN/
 └── README.md                # (Este archivo) Documentación y guía de uso
 ```
 
-````markdown
+
 ## ⚙️ Instalación
 
 Puedes elegir entre **Conda** (recomendado) o **pip**:
