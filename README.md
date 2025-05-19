@@ -47,3 +47,42 @@ PRUEBA_HB_JUAN/
 ├── prueba_habi.yml          # Conda environment: recrea el entorno tal cual se usó
 ├── requirements.txt         # Lista de dependencias para instalación vía pip
 └── README.md                # (Este archivo) Documentación y guía de uso
+```
+
+````markdown
+## ⚙️ Instalación
+
+Puedes elegir entre **Conda** (recomendado) o **pip**:
+
+### Opción 1 · Conda (idéntico al entorno original)
+
+```bash
+# Clona el repo
+git clone https://github.com/tu-usuario/PRUEBA_HB_JUAN.git
+cd PRUEBA_HB_JUAN
+
+# Crea y activa el entorno
+conda env create -f prueba_habi.yml
+conda activate prueba_habi
+````
+
+### Opción 2 · pip + venv
+
+```bash
+python -m venv venv
+source venv/bin/activate          # En Windows: venv\Scripts\activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+> **Nota:** Si vas a ejecutar el notebook en **Google Colab**, basta con subir el `.ipynb`; Colab detectará e instalará la mayoría de los paquetes.
+> Para que los widgets interactivos se rendericen, añade al comienzo del notebook:
+>
+> ```python
+> from google.colab import output
+> output.enable_custom_widget_manager()
+> ```
+
+```
+```
+
