@@ -187,3 +187,4 @@ data/**
 
 # No ignores el contenido de data/procesado/
 !data/procesado/**
+!data/interim/**
