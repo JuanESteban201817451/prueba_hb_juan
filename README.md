@@ -1,7 +1,7 @@
-# Prueba Habi  
-**Juan Esteban Segura**
+# PRUEBA_HB_JUAN
 
-Este es un repositorio temporal que será deshabilitado una vez finalice el proceso de evaluación de la prueba técnica.
+Repositorio de la prueba técnica para **Habi**.  
+Contiene un flujo completo ―desde la descarga y el pre-procesamiento de datos geográficos hasta la generación de modelos y visualizaciones― empaquetado en un cuaderno de Jupyter y varios scripts auxiliares.
 
 ## 📘 Cómo abrir este cuaderno en Google Colab
 
@@ -26,10 +26,6 @@ Haz clic en el siguiente botón para abrir directamente el cuaderno en Google Co
 3. Selecciona la pestaña **GitHub**.
 4. En el campo de búsqueda, ingresa la siguiente ruta del repositorio:
 
-# PRUEBA_HB_JUAN
-
-Repositorio de la prueba técnica para **Habi**.  
-Contiene un flujo completo ―desde la descarga y el pre-procesamiento de datos geográficos hasta la generación de modelos y visualizaciones― empaquetado en un cuaderno de Jupyter y varios scripts auxiliares.
 
 ## 🌳 Estructura de carpetas
 
