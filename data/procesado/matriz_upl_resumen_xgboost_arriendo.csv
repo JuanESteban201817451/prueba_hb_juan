@@ -1,0 +1,2 @@
+modelo,tipo,RMSE,MAPE
+xgboost,arriendo,1862543.8383706121,0.21432423008711493
