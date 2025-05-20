@@ -1,0 +1,2 @@
+modelo,tipo,RMSE,MAPE
+xgboost,venta,112176646.90922558,0.1845072740344362

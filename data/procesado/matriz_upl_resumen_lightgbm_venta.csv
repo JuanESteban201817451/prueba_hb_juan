@@ -1,0 +1,2 @@
+modelo,tipo,RMSE,MAPE
+lightgbm,venta,71182234.52147536,0.10772382175478346
