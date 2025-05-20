@@ -191,3 +191,147 @@ def ejecutar_pipeline(df, target_col='precio'):
 
         df_resultados = pd.DataFrame({k: {'RMSE': v['rmse'], 'MAPE': v['mape']} for k, v in resultados.items()}).T.sort_values('RMSE')
         df_resultados.to_csv(f"data/procesado/rmse_mape_modelos_{tipo}.csv")
+
+def ejecutar_pipeline_matriz_upl(df, target_col='precio'):
+    # -- Definir columnas -------------------------------------------------
+    LOG_TARGET  = "log_precio"
+    MAX_PRICE = 1_000_000_000          # 1e9  ← precio tope en pesos
+    df = df.query('imputado==0')
+    df = df[(df[target_col] > 0)& (df[target_col] <MAX_PRICE)].copy()
+    df = df[(df['area'] > 0)& (df['area'] <1_000)].copy()
+    df=df.dropna()
+
+    ##---- Metro Cuadrado promedio de la zona ---------------------------
+    cat_cols = ['tiponegocio', 'CODIGO_UPL', 'banos', 'garajes', 'num_ascensores','anno_creacion', 'anos_antiguedad']
+    num_cols = ['area', 'habitaciones','latitud','longitud']
+    num_cols_temp  = ['m2_propiedad']
+
+    ##---- Metro Cuadrado promedio de la zona ---------------------------
+    df = df.dropna(subset=cat_cols + num_cols +num_cols_temp+ [target_col])
+
+    for tipo in ['venta', 'arriendo']:
+        num_cols = ['area', 'habitaciones','latitud','longitud']
+        print(f"Entrenando modelo para: {tipo.upper()}")
+        df_sub = df[df['tiponegocio'] == tipo].copy()
+        print(len(df_sub))
+
+        X = df_sub[cat_cols + num_cols +num_cols_temp]
+        y = np.log1p(df_sub[target_col])
+        y_real = df_sub[target_col]
+
+        X_train, X_test, y_train, y_test, y_train_real, y_test_real = train_test_split(
+            X, y, y_real, test_size=0.2, random_state=42, stratify=df_sub['CODIGO_UPL'])
+        df_train = X_train.copy()
+        df_train[target_col] = y_train_real
+        df_test = X_test.copy()
+        df_test[target_col] = y_test_real
+
+
+        matriz_precios_espacial = df_train.groupby('CODIGO_UPL').apply(
+            lambda g: pd.Series({
+                'area_total': g['area'].sum(),
+                'valor_m2_promedio_propiedad_upl': g['m2_propiedad'].mean(),
+                'valor_m2_promedio_upl': (  g[target_col].sum()) / g['area'].sum(),
+            })
+        ).reset_index()[['CODIGO_UPL','valor_m2_promedio_upl','valor_m2_promedio_propiedad_upl']]
+        new_columns=['valor_m2_promedio_propiedad_upl','valor_m2_promedio_upl']
+        ## Elminar var temporal
+        df_train,df_test=df_train.drop(columns=num_cols_temp),df_test.drop(columns=num_cols_temp)
+        df_train,df_test=df_train.merge(matriz_precios_espacial,on="CODIGO_UPL",how='left'),df_test.merge(matriz_precios_espacial,on="CODIGO_UPL",how='left')
+
+        df_train.to_csv(f"data/procesado/train_matriz_upl_{tipo}.csv", index=False)
+        df_test.to_csv(f"data/procesado/test_matriz_upl_{tipo}.csv", index=False)
+
+        num_cols+=new_columns
+        X_train, X_test=(df_train[cat_cols + num_cols],df_test[cat_cols + num_cols])
+        
+        resultados = {}
+        modelos = {
+            'mlp': (objective_mlp, True),
+            'xgboost': (objective_xgboost, False),
+            'lightgbm': (objective_lightgbm, False),
+            'catboost': (objective_catboost, False),
+            'ridge': (objective_ridge, True),
+            'random_forest': (objective_random_forest, False),
+        }
+
+        for nombre, (objective, necesita_escalado) in tqdm(modelos.items(), desc=f"Modelos {tipo}"):
+            transformers = [('cat', OneHotEncoder(handle_unknown='ignore'), cat_cols)]
+            if necesita_escalado:
+                transformers.append(('num', StandardScaler(), num_cols))
+            else:
+                transformers.append(('num', 'passthrough', num_cols))
+
+            preprocessor = ColumnTransformer(transformers)
+
+            X_train_proc = preprocessor.fit_transform(X_train)
+            X_test_proc = preprocessor.transform(X_test)
+
+            study = optuna.create_study(direction='minimize')
+            study.optimize(lambda trial: objective(trial, X_train_proc, y_train), n_trials=10)
+
+            best_params = study.best_params
+
+            if nombre == 'xgboost':
+                model = xgb.train(best_params, xgb.DMatrix(X_train_proc, label=y_train))
+                preds_log = model.predict(xgb.DMatrix(X_test_proc))
+            elif nombre == 'catboost':
+                model = cb.CatBoostRegressor(**best_params)
+                model.fit(X_train_proc, y_train)
+                preds_log = model.predict(X_test_proc)
+            elif nombre == 'lightgbm':
+                model = lgb.LGBMRegressor(**best_params)
+                model.fit(X_train_proc, y_train)
+                preds_log = model.predict(X_test_proc)
+            elif nombre == 'random_forest':
+                model = RandomForestRegressor(**best_params)
+                model.fit(X_train_proc, y_train)
+                preds_log = model.predict(X_test_proc)
+            elif nombre == 'ridge':
+                model = Ridge(**best_params)
+                model.fit(X_train_proc, y_train)
+                preds_log = model.predict(X_test_proc)
+            elif nombre == 'mlp':
+                print(best_params)
+                if 'units_l0' in best_params and 'units_l1' in best_params:
+                    hidden_layer_sizes = (best_params.pop('units_l0'), best_params.pop('units_l1'))
+                    best_params['hidden_layer_sizes'] = hidden_layer_sizes
+                model = MLPRegressor(**best_params)
+                model.fit(X_train_proc, y_train)
+                preds_log = model.predict(X_test_proc)
+
+            if np.any(np.isnan(preds_log)) or np.any(np.isinf(preds_log)):
+                print(f"Advertencia: predicciones inválidas en {nombre} - {tipo}. Se omite este modelo.")
+                continue
+
+
+            # 1. Si entrenaste con np.log1p(y)  (lo más frecuente con precios):
+            MAX_LOG = np.log1p(MAX_PRICE)      # ≈ 20.723265
+            preds_log = np.minimum(preds_log, MAX_LOG)
+            preds = np.expm1(preds_log)        # vuelve a pesos (exp(x)-1)
+            preds = np.expm1(preds_log)
+
+
+
+            print(f"{nombre} - {tipo}: Predicciones expuestas - max: {preds.max():,.2f}, min: {preds.min():,.2f}")
+
+            rmse = np.sqrt(mean_squared_error(y_test_real, preds))
+            mape = mean_absolute_percentage_error(y_test_real, preds)
+            resultados[nombre] = {
+                'model': model, 'rmse': rmse, 'mape': mape,
+                'tipo': tipo, 'modelo': nombre
+            }
+
+            df_individual = pd.DataFrame({
+                'modelo': [nombre],
+                'tipo': [tipo],
+                'RMSE': [rmse],
+                'MAPE': [mape]
+            })
+            df_individual.to_csv(f"data/procesado/matriz_upl_resumen_{nombre}_{tipo}.csv", index=False)
+
+            joblib.dump(model, f"data/procesado/matriz_upl_modelo_final_{tipo}_{nombre}.pkl")
+            print(f"Modelo guardado: data/procesado/matriz_upl_modelo_final_{tipo}_{nombre}.pkl\n")
+
+        df_resultados = pd.DataFrame({k: {'RMSE': v['rmse'], 'MAPE': v['mape']} for k, v in resultados.items()}).T.sort_values('RMSE')
+        df_resultados.to_csv(f"data/procesado/matriz_upl_rmse_mape_modelos_{tipo}.csv")
